@@ -1,0 +1,15 @@
+[{
+        "marketDirection": "buy",
+        "currency": "EUR",
+        "amount": "238400.20",
+        "counterCurrency": "USD",
+        "valueDate": "25/01/2019"
+    },
+    {
+        "marketDirection": "sell",
+        "currency": "USD",
+        "amount": "250200.20",
+        "counterCurrency": "EUR",
+        "valueDate": "25/01/2019"
+    }
+]

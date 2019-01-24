@@ -1,0 +1,757 @@
+{
+	"info": {
+		"_postman_id": "e0caa0cd-230d-4901-a411-f45705bd9fc1",
+		"name": "Kantox Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Valid input",
+			"item": [
+				{
+					"name": "Login",
+					"item": [
+						{
+							"name": "Login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "c7aecc03-0e61-4356-a745-e264e4c3ca0d",
+										"exec": [
+											"let token = pm.response.json().token",
+											"pm.environment.set(\"token\", token);",
+											"",
+											"pm.test(\"Should have token property\", () => {",
+											"    pm.expect(pm.response.json()).to.have.property('token');",
+											"});",
+											"",
+											"pm.test(\"token should not be empty\", () => {",
+											"    pm.expect(pm.response.json().token).to.not.be.empty;",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "3a71b3cc-e025-40a1-9dbc-8991917c0ab1",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "login",
+											"value": "{{login}}",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "{{password}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseUrl}}/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Token valid",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "7538a843-a320-45e5-9f51-84545484db76",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "0e58de96-be2a-42dd-8311-31784f089d09",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseUrl}}/token_valid",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"token_valid"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Get counter value",
+					"item": [
+						{
+							"name": "Get counter value",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "06f97697-89d8-4e2e-875d-37e434e8f969",
+										"exec": [
+											"pm.test(\"Response body should not be empty\", () => {",
+											"   pm.expect(pm.response.json()).to.not.be.empty; ",
+											"});",
+											"",
+											"pm.test(\"Should have ratePair property\", () => {",
+											"    pm.expect(pm.response.json()).to.have.property('ratePair');",
+											"});",
+											"",
+											"let response = pm.response.json();",
+											"",
+											"pm.test(\"marketDirection should not be empty\", () => {",
+											"    pm.expect(response.marketDirection).to.not.be.empty;",
+											"});",
+											"",
+											"pm.test(\"marketDirection value should be equal to the provided on input\", () => {",
+											"    pm.expect(response.marketDirection).to.be.eql(data.marketDirection);",
+											"});",
+											"",
+											"pm.test(\"ratePair should not be empty\", () => {",
+											"    pm.expect(response.ratePair).to.not.be.empty;",
+											"});",
+											"",
+											"pm.test(\"ratePair value should concatenate currency and CounterCurrency\", () => {",
+											"    let currency = response.currency;",
+											"    let counterCurrency = response.counterCurrency;",
+											"    ",
+											"    // The value of ratePair depends on the marketDirection",
+											"    if (response.marketDirection === 'buy') {",
+											"        pm.expect(response.ratePair).to.eql(currency + counterCurrency);",
+											"    } else {",
+											"        pm.expect(response.ratePair).to.eql(counterCurrency + currency);",
+											"    }",
+											"});",
+											"",
+											"pm.test(\"Should have rate property\", () => {",
+											"    pm.expect(response).to.have.property('rate');",
+											"});",
+											"",
+											"pm.test(\"rate should not be empty\", () => {",
+											"    pm.expect(response.rate).to.not.be.empty;",
+											"});",
+											"",
+											"pm.test(\"Should have marketDirection property\", () => {",
+											"    pm.expect(response).to.have.property('marketDirection');",
+											"});",
+											"",
+											"pm.test(\"Should have amount property\", () => {",
+											"    pm.expect(response).to.have.property('amount');",
+											"});",
+											"",
+											"pm.test(\"amount should not be empty\", () => {",
+											"    pm.expect(String(response.amount)).to.not.be.empty;",
+											"});",
+											"",
+											"pm.test(\"Should have valueDate property\", () => {",
+											"    pm.expect(response).to.have.property('amount');",
+											"});",
+											"",
+											"pm.test(\"valueDate should not be empty\", () => {",
+											"    pm.expect(response.valueDate).to.not.be.empty;",
+											"});",
+											"",
+											"pm.test(\"valueDate value should be equal to the provided on input\", () => {",
+											"    pm.expect(response.valueDate).to.eql(data.valueDate);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "marketDirection",
+											"value": "{{marketDirection}}",
+											"type": "text"
+										},
+										{
+											"key": "currency",
+											"value": "{{currency}}",
+											"type": "text"
+										},
+										{
+											"key": "amount",
+											"value": "{{amount}}",
+											"type": "text"
+										},
+										{
+											"key": "counterCurrency",
+											"value": "{{counterCurrency}}",
+											"type": "text"
+										},
+										{
+											"key": "valueDate",
+											"value": "{{valueDate}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseUrl}}/companies/{{companyRef}}/orders/quote",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"companies",
+										"{{companyRef}}",
+										"orders",
+										"quote"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Create order",
+					"item": [
+						{
+							"name": "Create order",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "0ac8774b-9cf5-46ef-8371-096d3a33d79b",
+										"exec": [
+											"let response = pm.response.json();",
+											"",
+											"pm.test(\"Should have orderStatus property\", () => {",
+											"    pm.expect(response).to.have.property('orderStatus');",
+											"});",
+											"",
+											"pm.test(\"orderStatus should not be empty\", () => {",
+											"    pm.expect(response.orderStatus).to.not.be.empty;",
+											"});",
+											"",
+											"pm.test(\"Should have kantoxOrderRef property\", () => {",
+											"    pm.expect(response).to.have.property('kantoxOrderRef');",
+											"});",
+											"",
+											"pm.test(\"kantoxOrderRef should not be empty\", () => {",
+											"    pm.expect(response.kantoxOrderRef).to.not.be.empty;",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "marketDirection",
+											"value": "{{marketDirection}}",
+											"type": "text"
+										},
+										{
+											"key": "currency",
+											"value": "{{currency}}",
+											"type": "text"
+										},
+										{
+											"key": "amount",
+											"value": "{{amount}}",
+											"type": "text"
+										},
+										{
+											"key": "counterCurrency",
+											"value": "{{counterCurrency}}",
+											"type": "text"
+										},
+										{
+											"key": "beneficiaryAccountRef",
+											"value": "{{beneficiaryAccountRef}}",
+											"type": "text"
+										},
+										{
+											"key": "valueDate",
+											"value": "{{valueDate}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseUrl}}/companies/{{companyRef}}/orders/create",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"companies",
+										"{{companyRef}}",
+										"orders",
+										"create"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			],
+			"description": "Request with valid input according to the documentation, expecting correct results",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "3ad0f544-0b04-49dc-a707-3e0c3178d7ef",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "b803dd79-4b44-42db-9ce8-68292f829d2d",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Status value is success\", function () {",
+							"    pm.expect(pm.response.json().status).to.eql(\"success\");",
+							"});"
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Invalid input",
+			"item": [
+				{
+					"name": "Create order invalid",
+					"item": [
+						{
+							"name": "Create order (invalid market direction)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "0ac8774b-9cf5-46ef-8371-096d3a33d79b",
+										"exec": [
+											"pm.test(\"Status code is 403\", () => {",
+											"    pm.response.to.have.status(403);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "marketDirection",
+											"value": "WRONG MARKET DIRECTION",
+											"type": "text"
+										},
+										{
+											"key": "currency",
+											"value": "EUR",
+											"type": "text"
+										},
+										{
+											"key": "amount",
+											"value": "250200.20",
+											"type": "text"
+										},
+										{
+											"key": "counterCurrency",
+											"value": "USD",
+											"type": "text"
+										},
+										{
+											"key": "beneficiaryAccountRef",
+											"value": "{{beneficiaryAccountRef}}",
+											"type": "text"
+										},
+										{
+											"key": "valueDate",
+											"value": "25/01/2019",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseUrl}}/companies/{{companyRef}}/orders/create",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"companies",
+										"{{companyRef}}",
+										"orders",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create order (invalid currency)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "0ac8774b-9cf5-46ef-8371-096d3a33d79b",
+										"exec": [
+											"pm.test(\"Status code is 500\", () => {",
+											"    pm.response.to.have.status(500);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "marketDirection",
+											"value": "buy",
+											"type": "text"
+										},
+										{
+											"key": "currency",
+											"value": "ABCDEF",
+											"type": "text"
+										},
+										{
+											"key": "amount",
+											"value": "250200.20",
+											"type": "text"
+										},
+										{
+											"key": "counterCurrency",
+											"value": "USD",
+											"type": "text"
+										},
+										{
+											"key": "beneficiaryAccountRef",
+											"value": "{{beneficiaryAccountRef}}",
+											"type": "text"
+										},
+										{
+											"key": "valueDate",
+											"value": "25/01/2019",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseUrl}}/companies/{{companyRef}}/orders/create",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"companies",
+										"{{companyRef}}",
+										"orders",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create order (invalid amount)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "0ac8774b-9cf5-46ef-8371-096d3a33d79b",
+										"exec": [
+											"pm.test(\"Status code is 403\", () => {",
+											"    pm.response.to.have.status(403);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "marketDirection",
+											"value": "buy",
+											"type": "text"
+										},
+										{
+											"key": "currency",
+											"value": "EUR",
+											"type": "text"
+										},
+										{
+											"key": "amount",
+											"value": "-9999",
+											"type": "text"
+										},
+										{
+											"key": "counterCurrency",
+											"value": "USD",
+											"type": "text"
+										},
+										{
+											"key": "beneficiaryAccountRef",
+											"value": "{{beneficiaryAccountRef}}",
+											"type": "text"
+										},
+										{
+											"key": "valueDate",
+											"value": "25/01/2019",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseUrl}}/companies/{{companyRef}}/orders/create",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"companies",
+										"{{companyRef}}",
+										"orders",
+										"create"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "0e202cda-a191-4fcd-81b3-0fdf4515b943",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "cc8e3d8c-7f29-4713-af9c-4dee01d47244",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			],
+			"description": "Requests made with invalid inputs, like negative amounts, non existent login credentials, etc., to make sure the API handles them correctly",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "995090de-de96-446b-958b-55dac45bdce8",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "18380486-2ae6-4c87-8c3a-9da3a55018dc",
+						"type": "text/javascript",
+						"exec": [
+							"let response = pm.response.json();",
+							"",
+							"pm.test(\"Should have status property\", () => {",
+							"    pm.expect(response).to.have.property('status');",
+							"});",
+							"",
+							"pm.test(\"status should not be empty\", () => {",
+							"    pm.expect(response.status).to.not.be.empty;",
+							"});",
+							"",
+							"pm.test(\"status value should be error\", () => {",
+							"    pm.expect(response.status).to.eql('error');",
+							"});",
+							"",
+							"pm.test(\"Should have reason property\", () => {",
+							"    pm.expect(response).to.have.property('reason');",
+							"});",
+							"",
+							"pm.test(\"reason should not be empty\", () => {",
+							"    pm.expect(String(response.reason)).to.not.be.empty;",
+							"});",
+							"",
+							"pm.test(\"Should have errorDetails property\", () => {",
+							"    pm.expect(response).to.have.property('errorDetails');",
+							"});",
+							"",
+							"pm.test(\"errorDetails should not be empty\", () => {",
+							"    pm.expect(response.errorDetails).to.not.be.empty;",
+							"});"
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "9026e4a4-1923-4173-8ad1-63cb828bc16d",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "47135fb8-7949-45d3-879d-f0be6f5f8e88",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "91a77ec7-6961-4769-9705-149e5ef39d21",
+			"key": "baseUrl",
+			"value": "https://demo.kantox.com/api",
+			"type": "string"
+		},
+		{
+			"id": "aaeff204-6dc6-403a-8df6-101293bc86c1",
+			"key": "companyRef",
+			"value": "1SZKCL2H1",
+			"type": "string"
+		},
+		{
+			"id": "8ff13034-5962-432d-8360-ce58a7ba85d1",
+			"key": "beneficiaryAccountRef",
+			"value": "BA-26Q91JZ9P",
+			"type": "string"
+		},
+		{
+			"id": "480f223d-6879-485a-879d-645d05cf260d",
+			"key": "login",
+			"value": "apiusertest@kantox.com",
+			"type": "string"
+		},
+		{
+			"id": "93ebf8a1-f237-4b39-bb93-26f04077f859",
+			"key": "password",
+			"value": "!2018abde123",
+			"type": "string"
+		}
+	]
+}
